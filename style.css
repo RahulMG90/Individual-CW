@@ -1,0 +1,43 @@
+.navbar {
+    margin-bottom: 10px;
+}
+
+.sorting{
+    font-family: 'Courier New', Courier, monospace;
+    padding-left: 20px;
+}
+
+.sidebar {
+    position: absolute;
+    width: 17%;
+    height: 40%;
+    margin-top: 3.2rem;
+    background-color: lightgreen;
+    font-size: 500;
+    border-radius: 0.25rem;
+}
+
+.btn:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+.main-container {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    flex-direction: row;
+    gap: 10px;
+    padding: 50px;
+    padding-left: 18rem;
+    align-items: flex-start;
+    
+}
+
+/* .subject {
+    display: flex;
+    border: 1px solid lightgray;
+    justify-self: center;
+    flex-direction: column;
+    align-content: center;
+    background-color: blue;
+}    */
