@@ -132,10 +132,8 @@
       data: {
 
         subjects: subjects,
-        searchSub: "",
         showSubjects: true,
         cart: [],
-        bag: [],
       },
 
       methods: {
@@ -143,13 +141,8 @@
           this.showSubjects = this.showSubjects ? false : true;
         },
 
-        submit() {
-          alert("Your order has been placed")
-        },
-
         addToCart: function (subject) {
           this.cart.push(subject.id);
-          this.bag.push(subject);
         },
 
         canAddToCart(subject) {
@@ -166,16 +159,6 @@
           return count;
         },
 
-        sortedArray(variable) {
-          if (document.getElementById('ascending').checked) {
-            this.subjects.sort((a, b) => a[variable] < b[variable] ? -1 : 1);
-            // Descending
-          } else if (document.getElementById('descending').checked) {
-            this.subjects.sort((a, b) => a[variable] > b[variable] ? -1 : 1);
-          } else {
-            return
-          }
-        },
 
         // formValidity() {
 
