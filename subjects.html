@@ -69,7 +69,7 @@
               <h4 class="card-title">{{subject.title}}</h5>
                 <p class="card-text"><b>Location:</b> {{subject.location}}</p>
                 <p class="card-text"><b>Price:</b> ${{subject.price}}</p>
-                <p class="card-text"><b>Availibility:</b> {{subject.availableSlots}}</p>
+                <p class="card-text"><b>Availibility:</b> {{subject.availableSlots  - cartCount(subject.id)}}</p>
 
                 <button v-if="canAddToCart(subject)" class="btn btn-primary" v-on:click='addToCart(subject)'>Add to
                   cart</button>
