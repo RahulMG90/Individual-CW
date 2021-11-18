@@ -10,6 +10,9 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
 
   <link rel="stylesheet" href="style.css">
+  <script src="subjects.js"></script>
+
+  <link href="https://fonts.googleapis.com/css2?family=Overpass:wght@700&display=swap" rel="stylesheet">
 
 </head>
 
@@ -22,70 +25,179 @@
       <div class="container-fluid">
         <a class="navbar-brand"><strong>Activity Clubs</strong></a>
         <form class="d-flex">
-          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-          <button class="btn btn-outline-primary" type="submit">Search</button>
         </form>
-        <button type="button" class="btn btn-light"><span class="fas fa-cart-plus"></span> Checkout</button>
+
+        <button class="btn btn-light" v-on:click="showCheckout">
+          {{ cartItemCount }}
+          <span class="fas fa-cart-plus"></span> Checkout
+        </button>
+
       </div>
     </nav>
 
-    <!-- Side Bar-->
-    <div class="sidebar">
-      <h2 class="sorting">Sort By</h2>
-      <ul style="list-style-type: none;">
-        <li><input type="radio" name="sorting"> Subject</li>
-        <li><input type="radio" name="sorting"> Location</li>
-        <li><input type="radio" name="sorting"> Price</li>
-        <li><input type="radio" name="sorting"> Availibility</li>
-      </ul>
+    <main>
+      <div v-if="showSubjects">
+        <!-- Showing the subjects -->
+
+        <!-- Side Bar-->
+        <div class="sidebar">
+          <h2 class="sorting">Sort By</h2>
+          <ul style="list-style-type: none;">
+            <li><input type="radio" name="sorting"> Subject</li>
+            <li><input type="radio" name="sorting"> Location</li>
+            <li><input type="radio" name="sorting"> Price</li>
+          </ul>
 
 
-      <hr style="width: 70%; margin: auto; height: 2%; border-radius: 2px;">
-      <br>
+          <hr style="width: 70%; margin: auto; height: 2%; border-radius: 2px;">
+          <br>
 
-      <ul style="list-style-type: none;">
-        <li><input type="radio" name="order"> Ascending</li>
-        <li><input type="radio" name="order"> Descending</li>
-      </ul>
-    </div>
+          <h2 class="sorting">Price Sort</h2>
+          <ul style="list-style-type: none;">
+            <li><input type="radio" name="order" id="ascending"> Lowest to Highest</li>
+            <li><input type="radio" name="order" id="descending"> Highest to Lowest</li>
+          </ul>
+        </div>
 
-    <!-- Main page container -->
-    <div class="main-container">
-      
-      <!-- Cards container -->
-      <div class="card" style="width: 18rem;">
-        <img v-bind:src="subject.img" class="card-img-top">
-        <div class="card-body">
-          <h4 class="card-title">{{subject.title}}</h5>
-          <p class="card-text"><b>Location:</b> {{subject.location}}</p>
-          <p class="card-text"><b>Price:</b> {{subject.price}}</p>
-          <p class="card-text"><b>Availibility:</b> {{subject.availableSlots}}</p>
+        <!-- Main page container -->
+        <div class="main-container">
 
-          <a href="#" class="btn btn-primary">Add to cart</a>
+          <!-- Cards container -->
+          <div class="card" style="width: 18rem;" v-for="subject in subjects">
+            <img v-bind:src="subject.img" class="card-img-top">
+            <div class="card-body">
+              <h4 class="card-title">{{subject.title}}</h5>
+                <p class="card-text"><b>Location:</b> {{subject.location}}</p>
+                <p class="card-text"><b>Price:</b> ${{subject.price}}</p>
+                <p class="card-text"><b>Availibility:</b> {{subject.availableSlots}}</p>
+
+                <button v-if="canAddToCart(subject)" class="btn btn-primary" v-on:click='addToCart(subject)'>Add to
+                  cart</button>
+                <button disabled='disabled' class="btn btn-primary" v-else>Add to cart</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+
+      <!-- Checkout page-->
+      <div class="checkout" v-else>
+        <h2 style="font-family: 'Overpass';">Checkout</h2>
+
+        <div class=checkoutMain>
+
+          <center>
+            <div class="checkoutInfo">
+              <table>
+                <tr>
+                  <td>
+                    <p><b>Name:</b></p>
+                  </td>
+                  <td><input type="email" class="form-control" id="formName"></td>
+                </tr>
+                <tr>
+                  <td>
+                    <p><b>Phone:</b></p>
+                  </td>
+                  <td><input type="email" class="form-control" id="formPhone"></td>
+                </tr>
+                <tr>
+                  <td><button type="button" class="btn btn-success" v-on:click="formValidity">Checkout</button></td>
+                </tr>
+              </table>
+            </div>
+          </center>
+
         </div>
       </div>
 
-    </div>
 
+    </main>
   </div>
 
   <br>
   </div>
 
-  <script type = "text/javascript">
+  <script type="text/javascript">
 
     let app = new Vue({
       el: '#app',
       data: {
-        subject: {
-          id: 1001,
-          title: "Literature",
-          price: 50,
-          location: "Germany",
-          img: "pen.png",
-          availableSlots: 5
+
+        subjects: subjects,
+        searchSub: "",
+        showSubjects: true,
+        cart: [],
+        bag: [],
+      },
+
+      methods: {
+        showCheckout() {
+          this.showSubjects = this.showSubjects ? false : true;
+        },
+
+        submit() {
+          alert("Your order has been placed")
+        },
+
+        addToCart: function (subject) {
+          this.cart.push(subject.id);
+          this.bag.push(subject);
+        },
+
+        canAddToCart(subject) {
+          return subject.availableSlots > this.cartCount(subject.id);
+        },
+
+        cartCount(id) {
+          let count = 0;
+          for (let i = 0; i < this.cart.length; i++) {
+            if (this.cart[i] === id) {
+              count++;
+            }
+          }
+          return count;
+        },
+
+        sortedArray(variable) {
+          if (document.getElementById('ascending').checked) {
+            this.subjects.sort((a, b) => a[variable] < b[variable] ? -1 : 1);
+            // Descending
+          } else if (document.getElementById('descending').checked) {
+            this.subjects.sort((a, b) => a[variable] > b[variable] ? -1 : 1);
+          } else {
+            return
+          }
+        },
+
+        // formValidity() {
+
+        //   name = document.getElementById('formName').value;
+        //   phone = document.getElementById('formPhone').value;
+
+        //   if (name = "") {
+        //     alert("Please input your name");
+        //   }
+        //   else if (phone = "") {
+        //     alert("Please input your phone number");
+        //   }
+        //   else {
+        //     alert("Your order has been placed successfuly!")
+        //   }
+        // },
+        
+      },
+
+      computed: {
+        cartItemCount: function () {
+          return this.cart.length;
+        },
+
+        checkCart() {
+          return this.cartItemCount > 0;
         }
-      }
+      },
     })
 
   </script>
