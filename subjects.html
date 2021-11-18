@@ -74,6 +74,12 @@
                 <button v-if="canAddToCart(subject)" class="btn btn-primary" v-on:click='addToCart(subject)'>Add to
                   cart</button>
                 <button disabled='disabled' class="btn btn-primary" v-else>Add to cart</button>
+
+                <span v-if='subject.availableSlots === cartCount(subject.id)'> All out!</span>
+                <span v-else-if="subject.availableSlots - cartCount(subject.id) < 5"> Only {{subject.availableSlots -
+                  cartCount(subject.id)}} left!</span>
+                <span v-else>Buy now!</span>
+
             </div>
           </div>
         </div>
