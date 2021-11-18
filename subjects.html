@@ -43,9 +43,9 @@
         <div class="sidebar">
           <h2 class="sorting">Sort By</h2>
           <ul style="list-style-type: none;">
-            <li><input type="radio" name="sorting"> Subject</li>
-            <li><input type="radio" name="sorting"> Location</li>
-            <li><input type="radio" name="sorting"> Price</li>
+            <li><input type="radio" name="sorting" v-on:click="sortedArray('title')"> Subject</li>
+            <li><input type="radio" name="sorting" v-on:click="sortedArray('location')"> Location</li>
+            <li><input type="radio" name="sorting" v-on:click="sortedArray('price')"> Price</li>
           </ul>
 
 
