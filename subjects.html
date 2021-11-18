@@ -134,6 +134,7 @@
         subjects: subjects,
         showSubjects: true,
         cart: [],
+        bag: [],
       },
 
       methods: {
@@ -159,6 +160,16 @@
           return count;
         },
 
+        sortedArray(variable) {
+          if (document.getElementById('ascending').checked) {
+            this.subjects.sort((a, b) => a[variable] < b[variable] ? -1 : 1);
+            // Descending
+          } else if (document.getElementById('descending').checked) {
+            this.subjects.sort((a, b) => a[variable] > b[variable] ? -1 : 1);
+          } else {
+            return
+          }
+        },
 
         // formValidity() {
 
